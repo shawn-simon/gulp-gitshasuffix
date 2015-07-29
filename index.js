@@ -25,6 +25,9 @@ module.exports = function (options) {
           finalSuffix = separator + shaSuffix;
 
       if (file.isNull()) {
+        // Save old path / base incase it's needed in another plugin (ex: gulp-rev-replace)    
+        file.revOrigPath = file.path;
+        file.revOrigBase = file.base;
         file.path = file.path + finalSuffix;
         stream.push(file);
         return callback();
@@ -35,6 +38,8 @@ module.exports = function (options) {
         finalSuffix = '';
       }
 
+      file.revOrigPath = file.path;
+      file.revOrigBase = file.base;
       file.path = path.join(dir, firstname + finalSuffix + ext);
       stream.push(file);
       return callback();
